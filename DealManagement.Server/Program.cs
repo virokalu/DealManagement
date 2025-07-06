@@ -1,4 +1,7 @@
 using DealManagement.Server.Data;
+using DealManagement.Server.Models;
+using DealManagement.Server.Models.Validators;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +11,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<DealContext>(options =>
     options.UseSqlServer(connectionString));
 
-
+builder.Services.AddScoped<IValidator<Deal>, DealValidator>();
+builder.Services.AddScoped<IValidator<Hotel>, HotelValidator>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
