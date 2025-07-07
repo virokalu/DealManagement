@@ -30,7 +30,7 @@ namespace DealManagement.Server.Services
             }
             catch (Exception ex)
             {
-                return new SaveDealResponse(ex.Message);
+                return new SaveDealResponse($"{ex.Message}");
             }
         }
     }

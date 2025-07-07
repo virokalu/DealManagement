@@ -36,7 +36,7 @@ namespace DealManagement.Server.Controllers
             return Ok(resources);
         }
 
-        // GET: api/Deals/5
+        // GET: api/Deals/slug
         [HttpGet("{id}")]
         public async Task<ActionResult<Deal>> GetDeal(string id)
         {
@@ -50,8 +50,7 @@ namespace DealManagement.Server.Controllers
             return deal;
         }
 
-        // PUT: api/Deals/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Deals/slug
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDeal(string id, Deal deal)
         {
@@ -102,18 +101,18 @@ namespace DealManagement.Server.Controllers
                 SaveDealResponse response = await _dealService.SaveAsync(deal);
                 if (!response.Success)
                 {
-                    return BadRequest(response.Message);
+                    return BadRequest(ModelExtensions.GetErrorMessages(response.Message));
                 }
                 var dealResource = _mapper.Map<Deal, DealResource>(response.Deal);
                 return Ok(dealResource);
             }
             catch (ValidationException ex)
             {
-                return BadRequest(ModelValidationExtensions.GetErrorMessages(ex));
+                return BadRequest(ModelExtensions.GetErrorMessages(ex));
             }
         }
 
-        // DELETE: api/Deals/5
+        // DELETE: api/Deals/slug
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDeal(string id)
         {
