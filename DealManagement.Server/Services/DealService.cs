@@ -16,6 +16,25 @@ namespace DealManagement.Server.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<DealResponse> DeleteAsync(string slug)
+        {
+            var deal = await _dealRepository.FindBySlugAsync(slug);
+            if (deal == null)
+            {
+                return new DealResponse("Deal not found.");
+            }
+            try
+            {
+                _dealRepository.Remove(deal);
+                await _unitOfWork.CompleteAsync();
+                return new DealResponse(deal);
+            }
+            catch (Exception ex)
+            {
+                return new DealResponse(ex.Message);
+            }
+        }
+
         public async Task<DealResponse> FindBySlugAsync(string slug)
         {
             var deal = await _dealRepository.FindBySlugAsync(slug);

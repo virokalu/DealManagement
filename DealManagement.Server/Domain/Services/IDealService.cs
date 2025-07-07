@@ -9,5 +9,6 @@ namespace DealManagement.Server.Domain.Services
         Task<DealResponse> SaveAsync(Deal deal);
         Task<DealResponse> FindBySlugAsync(string slug);
         Task<DealResponse> UpdateAsync(string slug, Deal deal);
+        Task<DealResponse> DeleteAsync(string slug);
     }
 }

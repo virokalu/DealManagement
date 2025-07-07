@@ -40,7 +40,13 @@ namespace DealManagement.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Deal>> GetDeal(string id)
         {
-            return Ok();
+            var response = await _dealService.FindBySlugAsync(id);
+            if (!response.Success)
+            {
+                return NotFound(ModelExtensions.GetErrorMessages(response.Message));
+            }
+            var dealResource = _mapper.Map<Deal, SaveDealResource>(response.Deal);
+            return Ok(dealResource);
         }
 
         // PUT: api/Deals/slug
@@ -91,17 +97,14 @@ namespace DealManagement.Server.Controllers
         // DELETE: api/Deals/slug
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDeal(string id)
-        {
-            var deal = await _context.Deals.FindAsync(id);
-            if (deal == null)
+        { 
+            var response = await _dealService.DeleteAsync(id);
+            if (!response.Success)
             {
-                return NotFound();
+                return BadRequest(ModelExtensions.GetErrorMessages(response.Message));
             }
-
-            _context.Deals.Remove(deal);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var dealResource = _mapper.Map<Deal, DealResource>(response.Deal);
+            return Ok(dealResource);
         }
     }
 }

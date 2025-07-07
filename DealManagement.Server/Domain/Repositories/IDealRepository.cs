@@ -10,5 +10,6 @@ namespace DealManagement.Server.Domain.Repositories
         Task AddAsync(Deal deal);
         Task<Deal?> FindBySlugAsync(string slug);
         void Update(Deal deal);
+        void Remove(Deal deal);
     }
 }

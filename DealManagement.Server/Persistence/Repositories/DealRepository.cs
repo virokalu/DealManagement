@@ -30,5 +30,9 @@ namespace DealManagement.Server.Persistence.Repositories
         {
             _context.Deals.Update(deal);
         }
+        public void Remove(Deal deal)
+        {
+            _context.Deals.Remove(deal);
+        }
     }
 }
