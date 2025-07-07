@@ -8,6 +8,7 @@ namespace DealManagement.Server.Mapping
     {
         public ResourceToModelProfile() {
             CreateMap<SaveDealResource, Deal>();
+            CreateMap<SaveHotelResource, Hotel>();
         }
 
     }

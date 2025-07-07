@@ -10,6 +10,7 @@ namespace DealManagement.Server.Mapping
         {
             CreateMap<Deal, DealResource>();
             CreateMap<Deal, SaveDealResource>();
+            CreateMap<Hotel, HotelResource>();
         }
     }
 }
