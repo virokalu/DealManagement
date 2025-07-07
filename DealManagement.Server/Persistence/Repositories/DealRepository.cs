@@ -1,0 +1,20 @@
+﻿using DealManagement.Server.Domain.Models;
+using DealManagement.Server.Domain.Repositories;
+using DealManagement.Server.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
+
+namespace DealManagement.Server.Persistence.Repositories
+{
+    public class DealRepository : BaseRepository, IDealRepository
+    {
+        public DealRepository(DealContext context) : base(context)
+        {
+        }
+
+        public async Task<IEnumerable<Deal>> ListAsync()
+        {
+            return await _context.Deals.ToListAsync();
+        }
+        // Additional methods for DealRepository can be added here
+    }
+}
