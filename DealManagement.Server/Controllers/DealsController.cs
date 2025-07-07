@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using DealManagement.Server.Domain.Models;
 using DealManagement.Server.Domain.Services;
@@ -15,14 +14,12 @@ namespace DealManagement.Server.Controllers
     [ApiController]
     public class DealsController : ControllerBase
     {
-        private readonly DealContext _context;
         private readonly IDealService _dealService;
         private readonly IValidator<SaveDealResource> _dealValidator;
         private readonly IMapper _mapper;
 
-        public DealsController(DealContext context, IValidator<SaveDealResource> validator, IDealService dealService, IMapper mapper)
+        public DealsController(IValidator<SaveDealResource> validator, IDealService dealService, IMapper mapper)
         {
-            _context = context;
             _dealValidator = validator;
             _dealService = dealService;
             _mapper = mapper;

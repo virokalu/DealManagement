@@ -1,9 +1,9 @@
-﻿using DealManagement.Server.Domain.Models;
+﻿using DealManagement.Server.Resources;
 using FluentValidation;
 
 namespace DealManagement.Server.Domain.Validators
 {
-    public class HotelValidator : AbstractValidator<Hotel>
+    public class HotelValidator : AbstractValidator<SaveHotelResource>
     {
         public HotelValidator()
         {

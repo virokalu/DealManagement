@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using DealManagement.Server.Domain.Models;
-using DealManagement.Server.Domain.Services.Communication;
+﻿using DealManagement.Server.Domain.Models;
 
 namespace DealManagement.Server.Domain.Repositories
 {
