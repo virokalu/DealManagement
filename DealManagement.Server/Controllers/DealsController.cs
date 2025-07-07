@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using DealManagement.Server.Domain.Models;
@@ -11,6 +6,8 @@ using DealManagement.Server.Domain.Services;
 using DealManagement.Server.Persistence.Contexts;
 using AutoMapper;
 using DealManagement.Server.Resources;
+using DealManagement.Server.Extensions;
+using DealManagement.Server.Domain.Services.Communication;
 
 namespace DealManagement.Server.Controllers
 {
@@ -20,10 +17,10 @@ namespace DealManagement.Server.Controllers
     {
         private readonly DealContext _context;
         private readonly IDealService _dealService;
-        private readonly IValidator<Deal> _dealValidator;
+        private readonly IValidator<SaveDealResource> _dealValidator;
         private readonly IMapper _mapper;
 
-        public DealsController(DealContext context, IValidator<Deal> validator, IDealService dealService, IMapper mapper)
+        public DealsController(DealContext context, IValidator<SaveDealResource> validator, IDealService dealService, IMapper mapper)
         {
             _context = context;
             _dealValidator = validator;
@@ -31,7 +28,6 @@ namespace DealManagement.Server.Controllers
             _mapper = mapper;
         }
 
-        // Fix for CS0029: Wrap the result of _dealService.ListAsync() in Ok() to return it as an ActionResult.
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Deal>>> GetDeals()
         {
@@ -65,14 +61,14 @@ namespace DealManagement.Server.Controllers
             }
 
             // Validate the deal using FluentValidation
-            try
-            {
-                _dealValidator.ValidateAndThrow(deal);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            //try
+            //{
+            //    _dealValidator.ValidateAndThrow(deal);
+            //}
+            //catch (ValidationException ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
 
             _context.Entry(deal).State = EntityState.Modified;
 
@@ -96,39 +92,25 @@ namespace DealManagement.Server.Controllers
         }
 
         // POST: api/Deals
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Deal>> PostDeal(Deal deal)
+        public async Task<IActionResult> PostDeal([FromBody] SaveDealResource resource)
         {
-
-            // Validate the deal using FluentValidation
             try
             {
-                _dealValidator.ValidateAndThrow(deal);
+                _dealValidator.ValidateAndThrow(resource);
+                var deal = _mapper.Map<SaveDealResource, Deal>(resource);
+                SaveDealResponse response = await _dealService.SaveAsync(deal);
+                if (!response.Success)
+                {
+                    return BadRequest(response.Message);
+                }
+                var dealResource = _mapper.Map<Deal, DealResource>(response.Deal);
+                return Ok(dealResource);
             }
             catch (ValidationException ex)
             {
-                return BadRequest(ex.Errors);
+                return BadRequest(ModelValidationExtensions.GetErrorMessages(ex));
             }
-
-            _context.Deals.Add(deal);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (DealExists(deal.Slug))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetDeal", new { id = deal.Slug }, deal);
         }
 
         // DELETE: api/Deals/5

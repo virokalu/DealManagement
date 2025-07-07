@@ -15,6 +15,12 @@ namespace DealManagement.Server.Persistence.Repositories
         {
             return await _context.Deals.ToListAsync();
         }
-        // Additional methods for DealRepository can be added here
+
+        public async Task AddAsync(Deal deal)
+        {
+            await _context.Deals.AddAsync(deal);
+        }
+
+
     }
 }
