@@ -8,5 +8,7 @@ namespace DealManagement.Server.Domain.Repositories
     {
         Task<IEnumerable<Deal>> ListAsync();
         Task AddAsync(Deal deal);
+        Task<Deal?> FindBySlugAsync(string slug);
+        void Update(Deal deal);
     }
 }

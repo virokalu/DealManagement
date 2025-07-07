@@ -18,15 +18,17 @@ namespace DealManagement.Server.Persistence.Repositories
 
         public async Task AddAsync(Deal deal)
         {
-            if(DealExists(deal.Slug))
-            {
-                throw new Exception($"'{deal.Slug}' already exists.");
-            }
             await _context.Deals.AddAsync(deal);
         }
-        private bool DealExists(string id)
+
+        public async Task<Deal?> FindBySlugAsync(string slug)
         {
-            return _context.Deals.Any(e => e.Slug == id);
+            return await _context.Deals.FindAsync(slug);
+        }
+
+        public void Update(Deal deal)
+        {
+            _context.Deals.Update(deal);
         }
     }
 }

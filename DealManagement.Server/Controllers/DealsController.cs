@@ -40,55 +40,31 @@ namespace DealManagement.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Deal>> GetDeal(string id)
         {
-            var deal = await _context.Deals.FindAsync(id);
-
-            if (deal == null)
-            {
-                return NotFound();
-            }
-
-            return deal;
+            return Ok();
         }
 
         // PUT: api/Deals/slug
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDeal(string id, Deal deal)
+        public async Task<IActionResult> PutDeal(string id, [FromBody] SaveDealResource resource)
         {
-            if (id != deal.Slug)
-            {
-                return BadRequest();
-            }
-
-            // Validate the deal using FluentValidation
-            //try
-            //{
-            //    _dealValidator.ValidateAndThrow(deal);
-            //}
-            //catch (ValidationException ex)
-            //{
-            //    return BadRequest(ex.Message);
-            //}
-
-            _context.Entry(deal).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _dealValidator.ValidateAndThrow(resource);
+                Deal deal = _mapper.Map<SaveDealResource, Deal>(resource);
+                DealResponse response = await _dealService.UpdateAsync(id, deal);
+                if (!response.Success)
+                {
+                    return BadRequest(ModelExtensions.GetErrorMessages(response.Message));
+                }
+                SaveDealResource dealResource = _mapper.Map<Deal, SaveDealResource>(response.Deal);
+                return Ok(dealResource);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (ValidationException ex)
             {
-                if (!DealExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ModelExtensions.GetErrorMessages(ex));
             }
-
-            return NoContent();
         }
+
 
         // POST: api/Deals
         [HttpPost]
@@ -98,12 +74,12 @@ namespace DealManagement.Server.Controllers
             {
                 _dealValidator.ValidateAndThrow(resource);
                 var deal = _mapper.Map<SaveDealResource, Deal>(resource);
-                SaveDealResponse response = await _dealService.SaveAsync(deal);
+                DealResponse response = await _dealService.SaveAsync(deal);
                 if (!response.Success)
                 {
                     return BadRequest(ModelExtensions.GetErrorMessages(response.Message));
                 }
-                var dealResource = _mapper.Map<Deal, DealResource>(response.Deal);
+                var dealResource = _mapper.Map<Deal, SaveDealResource>(response.Deal);
                 return Ok(dealResource);
             }
             catch (ValidationException ex)
@@ -126,11 +102,6 @@ namespace DealManagement.Server.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool DealExists(string id)
-        {
-            return _context.Deals.Any(e => e.Slug == id);
         }
     }
 }

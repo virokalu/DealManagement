@@ -9,6 +9,7 @@ namespace DealManagement.Server.Mapping
         public ModelToResourceProfile()
         {
             CreateMap<Deal, DealResource>();
+            CreateMap<Deal, SaveDealResource>();
         }
     }
 }
