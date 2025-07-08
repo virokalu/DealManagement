@@ -2,6 +2,6 @@
 {
     public class SaveDealResource : DealResource
     {
-        // TODO: Add hotel properties needed for saving a deal
+        public ICollection<SaveHotelResource> Hotels { get; set; } = new List<SaveHotelResource>();
     }
 }

@@ -10,8 +10,11 @@ namespace DealManagement.Server.Domain.Validators
                 .NotEmpty().WithMessage("Deal slug is required.");
             RuleFor(d => d.Name)
                 .NotEmpty().WithMessage("Deal name is required.");
-
-            // TODO: Add more validation rules as needed
+            RuleFor(d => d.Hotels)
+                .NotEmpty().WithMessage("Deal must have at least one hotel.")
+                .NotNull().WithMessage("Deal hotels cannot be null.")
+                .Must(hotels => hotels.Count > 0).WithMessage("Deal must have at least one hotel.");
+            RuleForEach(d => d.Hotels).SetValidator(new HotelValidator());
         }
     }
 }

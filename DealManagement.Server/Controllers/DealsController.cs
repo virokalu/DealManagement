@@ -2,7 +2,6 @@
 using FluentValidation;
 using DealManagement.Server.Domain.Models;
 using DealManagement.Server.Domain.Services;
-using DealManagement.Server.Persistence.Contexts;
 using AutoMapper;
 using DealManagement.Server.Resources;
 using DealManagement.Server.Extensions;
@@ -26,7 +25,7 @@ namespace DealManagement.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Deal>>> GetDeals()
+        public async Task<ActionResult<IEnumerable<DealResource>>> GetDeals()
         {
             var deals = await _dealService.ListAsync();
             var resources =  _mapper.Map<IEnumerable<Deal>, IEnumerable<DealResource>>(deals);
@@ -35,14 +34,14 @@ namespace DealManagement.Server.Controllers
 
         // GET: api/Deals/slug
         [HttpGet("{id}")]
-        public async Task<ActionResult<Deal>> GetDeal(string id)
+        public async Task<ActionResult<GetDealResource>> GetDeal(string id)
         {
             var response = await _dealService.FindBySlugAsync(id);
             if (!response.Success)
             {
                 return NotFound(ModelExtensions.GetErrorMessages(response.Message));
             }
-            var dealResource = _mapper.Map<Deal, SaveDealResource>(response.Deal);
+            var dealResource = _mapper.Map<Deal, GetDealResource>(response.Deal);
             return Ok(dealResource);
         }
 
@@ -82,7 +81,7 @@ namespace DealManagement.Server.Controllers
                 {
                     return BadRequest(ModelExtensions.GetErrorMessages(response.Message));
                 }
-                var dealResource = _mapper.Map<Deal, SaveDealResource>(response.Deal);
+                var dealResource = _mapper.Map<Deal, GetDealResource>(response.Deal);
                 return Ok(dealResource);
             }
             catch (ValidationException ex)

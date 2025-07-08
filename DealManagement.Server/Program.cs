@@ -19,11 +19,13 @@ builder.Services.AddDbContext<DealContext>(options =>
 
 // Registering the FluentValidation validators
 builder.Services.AddScoped<IValidator<SaveDealResource>, DealValidator>();
-builder.Services.AddScoped<IValidator<Hotel>, HotelValidator>();
+builder.Services.AddScoped<IValidator<SaveHotelResource>, HotelValidator>();
 
 // Registering the DealService and DealRepository with dependency injection
 builder.Services.AddScoped<IDealService, DealService>();
 builder.Services.AddScoped<IDealRepository, DealRepository>();
+builder.Services.AddScoped<IHotelService, HotelService>();
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

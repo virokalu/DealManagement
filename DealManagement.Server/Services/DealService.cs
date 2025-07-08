@@ -37,7 +37,7 @@ namespace DealManagement.Server.Services
 
         public async Task<DealResponse> FindBySlugAsync(string slug)
         {
-            var deal = await _dealRepository.FindBySlugAsync(slug);
+            var deal = await _dealRepository.FindByIdWithHotelsAsync(slug);
             if (deal == null)
             {
                 return new DealResponse("Deal not found.");
@@ -63,7 +63,18 @@ namespace DealManagement.Server.Services
 
             try
             {
+                if (deal.Hotels.Count == 0)
+                {
+                    return new DealResponse("Deal must have at least one hotel.");
+                }
+
                 await _dealRepository.AddAsync(deal);
+
+                foreach (var hotel in deal.Hotels)
+                {
+                    hotel.Deal = deal;                    
+                }
+
                 await _unitOfWork.CompleteAsync();
                 return new DealResponse(deal);
             }
@@ -75,27 +86,29 @@ namespace DealManagement.Server.Services
 
         public async Task<DealResponse> UpdateAsync(string slug, Deal deal)
         {
-            var existingDeal = await _dealRepository.FindBySlugAsync(slug); 
+            var existingDeal = await _dealRepository.FindByIdWithHotelsAsync(slug); 
             if (existingDeal == null)
             {
                 return new DealResponse("Deal not found.");
             }
-
-            var slugDeal = await _dealRepository.FindBySlugAsync(deal.Slug);
-
-            // Check if the slug already exists for a different deal
-            if (slugDeal != null && slugDeal.Slug != existingDeal.Slug)
+            if (existingDeal.Hotels.Count == 0)
             {
-                return new DealResponse("Slug already exists.");
+                return new DealResponse("Deal must have at least one hotel.");
             }
+
+            //var slugDeal = await _dealRepository.FindBySlugAsync(deal.Slug);
+
+            //// Check if the slug already exists for a different deal
+            //if (slugDeal != null && slugDeal.Slug != existingDeal.Slug)
+            //{
+            //    return new DealResponse("Slug already exists.");
+            //}
 
             try
             {
                 existingDeal.Name = deal.Name;
-                existingDeal.Slug = deal.Slug;
+                //existingDeal.Slug = deal.Slug;
                 existingDeal.Video = deal.Video;
-
-                // TODO: Update other properties as needed
 
                 _dealRepository.Update(existingDeal);
                 await _unitOfWork.CompleteAsync();

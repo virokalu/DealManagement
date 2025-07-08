@@ -7,6 +7,7 @@ namespace DealManagement.Server.Domain.Repositories
         Task<IEnumerable<Deal>> ListAsync();
         Task AddAsync(Deal deal);
         Task<Deal?> FindBySlugAsync(string slug);
+        Task<Deal?> FindByIdWithHotelsAsync(string slug);
         void Update(Deal deal);
         void Remove(Deal deal);
     }

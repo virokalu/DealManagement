@@ -26,6 +26,13 @@ namespace DealManagement.Server.Persistence.Repositories
             return await _context.Deals.FindAsync(slug);
         }
 
+        public async Task<Deal?> FindByIdWithHotelsAsync(string slug)
+        {
+            return await _context.Deals
+                .Include(d => d.Hotels)
+                .FirstOrDefaultAsync(d => d.Slug == slug);
+        }
+
         public void Update(Deal deal)
         {
             _context.Deals.Update(deal);

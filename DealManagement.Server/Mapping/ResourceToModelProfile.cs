@@ -7,7 +7,8 @@ namespace DealManagement.Server.Mapping
     public class ResourceToModelProfile : Profile
     {
         public ResourceToModelProfile() {
-            CreateMap<SaveDealResource, Deal>();
+            CreateMap<SaveDealResource, Deal>()
+                .ForMember(dest => dest.Hotels, opt => opt.MapFrom(src => src.Hotels));
             CreateMap<SaveHotelResource, Hotel>();
         }
 
