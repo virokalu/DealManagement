@@ -2,6 +2,8 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DealManagement.Server.Migrations
 {
     /// <inheritdoc />
@@ -43,6 +45,25 @@ namespace DealManagement.Server.Migrations
                         principalTable: "Deals",
                         principalColumn: "Slug",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Deals",
+                columns: new[] { "Slug", "Name", "Video" },
+                values: new object[,]
+                {
+                    { "summer-getaway", "Summer Getaway", "https://example.com/video1" },
+                    { "winter-retreat", "Winter Retreat", "https://example.com/video2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Hotels",
+                columns: new[] { "Id", "Amenities", "DealSlug", "Name", "Rate" },
+                values: new object[,]
+                {
+                    { 1, "Pool,WiFi,Breakfast", "summer-getaway", "Palm Beach Resort", 4.5m },
+                    { 2, "WiFi,Parking,Gym", "summer-getaway", "Oceanview Inn", 4.2m },
+                    { 3, "Sauna,Fireplace,Bar", "winter-retreat", "Snow Lodge", 4.7m }
                 });
 
             migrationBuilder.CreateIndex(
