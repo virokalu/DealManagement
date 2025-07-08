@@ -15,13 +15,15 @@ namespace DealManagement.Server.Controllers
     {
         private readonly IDealService _dealService;
         private readonly IValidator<SaveDealResource> _dealValidator;
+        private readonly IValidator<DealResource> _validator;
         private readonly IMapper _mapper;
 
-        public DealsController(IValidator<SaveDealResource> validator, IDealService dealService, IMapper mapper)
+        public DealsController(IValidator<SaveDealResource> validator, IDealService dealService, IMapper mapper, IValidator<DealResource> putvalidator)
         {
             _dealValidator = validator;
             _dealService = dealService;
             _mapper = mapper;
+            _validator = putvalidator;
         }
 
         [HttpGet]
@@ -47,18 +49,18 @@ namespace DealManagement.Server.Controllers
 
         // PUT: api/Deals/slug
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDeal(string id, [FromBody] SaveDealResource resource)
+        public async Task<IActionResult> PutDeal(string id, [FromBody] DealResource resource)
         {
             try
             {
-                _dealValidator.ValidateAndThrow(resource);
-                Deal deal = _mapper.Map<SaveDealResource, Deal>(resource);
+                _validator.ValidateAndThrow(resource);
+                Deal deal = _mapper.Map<DealResource, Deal>(resource);
                 DealResponse response = await _dealService.UpdateAsync(id, deal);
                 if (!response.Success)
                 {
                     return BadRequest(ModelExtensions.GetErrorMessages(response.Message));
                 }
-                SaveDealResource dealResource = _mapper.Map<Deal, SaveDealResource>(response.Deal);
+                var dealResource = _mapper.Map<Deal, DealResource>(response.Deal);
                 return Ok(dealResource);
             }
             catch (ValidationException ex)

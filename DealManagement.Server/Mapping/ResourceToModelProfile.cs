@@ -10,6 +10,7 @@ namespace DealManagement.Server.Mapping
             CreateMap<SaveDealResource, Deal>()
                 .ForMember(dest => dest.Hotels, opt => opt.MapFrom(src => src.Hotels));
             CreateMap<SaveHotelResource, Hotel>();
+            CreateMap<DealResource, Deal>();
         }
 
     }
