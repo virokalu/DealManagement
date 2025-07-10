@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "93be82c5-cdfd-4876-9302-50409709b8c4",
+		"name": "Deal Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26135372"
+	},
+	"item": [
+		{
+			"name": "Get list of Deal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:7222/api/Deals"
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Deal",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"slug\": \"summer-special-deal\",\r\n  \"name\": \"Summer Special Deal\",\r\n  \"video\": \"https://youtu.be/1RkYdMGYcLU\",\r\n  \"hotels\": [\r\n    {\r\n      \"name\": \"Ocean View Resort\",\r\n      \"rate\": 4.5,\r\n      \"amenities\": \"Pool, Free Wi-Fi, Breakfast included, Spa\",\r\n      \"dealSlug\": \"summer-special-deal\"\r\n    },\r\n    {\r\n      \"name\": \"Mountain Peak Hotel\",\r\n      \"rate\": 4.2,\r\n      \"amenities\": \"Hiking Trails, Fireplace, Free Parking, Pet Friendly\",\r\n      \"dealSlug\": \"summer-special-deal\"\r\n    }\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7222/api/Deals"
+			},
+			"response": []
+		},
+		{
+			"name": "Get a Deal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:7222/api/Deals/summer-getaway"
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Deal",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"slug\": \"summer-getaway\",\r\n    \"name\": \"Summer Gateway\",\r\n    \"video\": \"https://youtu.be/jiz5tx--30k\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7222/api/Deals/summer-getaway"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Deal",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"slug\": \"summer-getaway\",\r\n    \"name\": \"Summer Gateway\",\r\n    \"video\": \"https://youtu.be/jiz5tx--30k\"\r\n}"
+				},
+				"url": "https://localhost:7222/api/Deals/summer-getaway"
+			},
+			"response": []
+		},
+		{
+			"name": "Get a Hotel",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"slug\": \"summer-getaway\",\r\n    \"name\": \"Summer Gateway\",\r\n    \"video\": \"https://youtu.be/jiz5tx--30k\"\r\n}"
+				},
+				"url": "https://localhost:7222/api/Hotels/3"
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Hotel",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Snow Lodge\",\r\n    \"rate\": 4.7,\r\n    \"amenities\": \"Sauna,Fireplace,Bar\",\r\n    \"dealSlug\": \"winter-retreat\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7222/api/Hotels/"
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Hotel",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Snow Lodge\",\r\n    \"rate\": 4.7,\r\n    \"amenities\": \"Sauna,Fireplace,Bar\",\r\n    \"dealSlug\": \"winter-retreat\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7222/api/Hotels/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Hotel",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"slug\": \"summer-getaway\",\r\n    \"name\": \"Summer Gateway\",\r\n    \"video\": \"https://youtu.be/jiz5tx--30k\"\r\n}"
+				},
+				"url": "https://localhost:7222/api/Hotels/3"
+			},
+			"response": []
+		}
+	]
+}
