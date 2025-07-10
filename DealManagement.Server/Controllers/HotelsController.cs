@@ -24,11 +24,11 @@ namespace DealManagement.Server.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{slug}")]
-        public async Task<ActionResult<IEnumerable<HotelResource>>> GetHotels(string slug)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<HotelResource>> GetHotels(int id)
         {
-            var hotels = await _hotelService.ListAsync(slug);
-            var resources = _mapper.Map<IEnumerable<HotelResource>>(hotels);
+            var hotels = await _hotelService.FindByIdAsync(id);
+            var resources = _mapper.Map<HotelResource>(hotels);
             return Ok(resources);
         }
 
