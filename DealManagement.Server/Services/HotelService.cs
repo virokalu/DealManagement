@@ -32,9 +32,15 @@ namespace DealManagement.Server.Services
                 return new HotelResponse(ex.Message);
             }
         }
-        public Task<HotelResponse> FindByIdAsync(int id)
+        public async Task<HotelResponse> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var hotel = await _hotelRepository.FindByIdAsync(id);
+            if (hotel == null)
+            {
+                return new HotelResponse("Hotel not found");
+            }
+
+            return new HotelResponse(hotel);
         }
         public async Task<HotelResponse> UpdateAsync(int id, Hotel hotel)
         {

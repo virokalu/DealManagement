@@ -18,8 +18,8 @@ namespace DealManagement.Server.Persistence.Contexts
 
             // Seed Deals
             modelBuilder.Entity<Deal>().HasData(
-                new Deal { Name = "Summer Getaway", Slug = "summer-getaway", Video = "https://example.com/video1" },
-                new Deal { Name = "Winter Retreat", Slug = "winter-retreat", Video = "https://example.com/video2" }
+                new Deal { Name = "Summer Getaway", Slug = "summer-getaway", Video = "https://youtu.be/jiz5tx--30k" },
+                new Deal { Name = "Winter Retreat", Slug = "winter-retreat", Video = "https://youtu.be/qemqQHaeCYo" }
             );
 
             // Seed Hotels

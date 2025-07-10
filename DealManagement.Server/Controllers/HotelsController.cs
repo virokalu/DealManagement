@@ -27,8 +27,8 @@ namespace DealManagement.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<HotelResource>> GetHotels(int id)
         {
-            var hotels = await _hotelService.FindByIdAsync(id);
-            var resources = _mapper.Map<HotelResource>(hotels);
+            var response = await _hotelService.FindByIdAsync(id);
+            var resources = _mapper.Map<HotelResource>(response.Hotel);
             return Ok(resources);
         }
 
